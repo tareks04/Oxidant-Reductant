@@ -1,0 +1,696 @@
+﻿<!DOCTYPE html>
+<html lang="bn" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>জারক ও বিজারক পদার্থ | MCQ Quiz</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Font: Hind Siliguri -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        bangla: ['Hind Siliguri', 'sans-serif'],
+                    },
+                    colors: {
+                        deep: {
+                            bg: '#060913',
+                            surface: '#0d1322',
+                            card: '#131b2e',
+                            border: '#1e293b',
+                            accent: '#6366f1'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Hind Siliguri', sans-serif;
+            background-color: #060913;
+            color: #f1f5f9;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #090d16;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+
+        /* Glassmorphism Styling */
+        .glass-card {
+            background: rgba(19, 27, 46, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .glow-indigo {
+            box-shadow: 0 0 25px -5px rgba(99, 102, 241, 0.25);
+        }
+
+        .glow-emerald {
+            box-shadow: 0 0 20px -5px rgba(16, 185, 129, 0.3);
+        }
+
+        /* Smooth Transitions */
+        .animated-btn {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-[#060913] text-slate-100 flex flex-col justify-between selection:bg-indigo-500 selection:text-white">
+
+    <!-- Top Fixed Header -->
+    <header class="sticky top-0 z-40 glass-card border-b border-slate-800 shadow-xl">
+        <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center space-x-3 space-x-reverse">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-purple-600 to-pink-500 flex items-center justify-center font-bold text-xl shadow-lg text-white">
+                    💀
+                </div>
+                <div>
+                    <h1 class="text-base md:text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-purple-300 to-pink-400 leading-tight">
+                        জারক ও বিজারক পদার্থ
+                    </h1>
+                    <p class="text-xs text-slate-400">রসায়ন ২য় পত্র • জারণ-বিজারণ</p>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex items-center gap-2">
+                <button onclick="confirmReset()" class="animated-btn flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs md:text-sm font-medium bg-rose-500/10 text-rose-400 hover:bg-rose-500/20 border border-rose-500/20 active:scale-95">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                    <span>রিসেট (Reset)</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Progress Indicator -->
+        <div class="w-full bg-slate-950 h-1.5">
+            <div id="progress-bar" class="bg-gradient-to-r from-indigo-500 via-purple-500 to-emerald-400 h-1.5 transition-all duration-300 w-0"></div>
+        </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="max-w-6xl mx-auto w-full px-4 py-6 md:py-8 flex-grow">
+
+        <!-- Live Statistics Grid -->
+        <div id="stats-strip" class="mb-6 grid grid-cols-3 gap-3">
+            <div class="glass-card p-3 rounded-2xl text-center border border-slate-800">
+                <span class="text-xs text-slate-400 block mb-0.5">মোট প্রশ্ন</span>
+                <span id="stat-total" class="text-lg md:text-2xl font-bold text-indigo-400">0</span>
+            </div>
+            <div class="glass-card p-3 rounded-2xl text-center border border-slate-800">
+                <span class="text-xs text-slate-400 block mb-0.5">উত্তর প্রদান</span>
+                <span id="stat-answered" class="text-lg md:text-2xl font-bold text-amber-400">0</span>
+            </div>
+            <div class="glass-card p-3 rounded-2xl text-center border border-slate-800">
+                <span class="text-xs text-slate-400 block mb-0.5">বর্তমান স্কোর</span>
+                <span id="stat-score" class="text-lg md:text-2xl font-bold text-emerald-400">0</span>
+            </div>
+        </div>
+
+        <!-- Question Quick Navigator -->
+        <div class="mb-6 glass-card p-3.5 rounded-2xl border border-slate-800">
+            <div class="flex justify-between items-center mb-2.5 px-1">
+                <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">প্রশ্ন নেভিগেটর</span>
+                <span id="completion-tag" class="text-xs text-indigo-400 font-semibold bg-indigo-500/10 px-2 py-0.5 rounded-md border border-indigo-500/20">0% সম্পন্ন</span>
+            </div>
+            <div id="nav-grid" class="flex flex-wrap gap-1.5 max-h-36 overflow-y-auto pr-1">
+                <!-- Navigation buttons generated by JS -->
+            </div>
+        </div>
+
+        <!-- Quiz card + bookmarks sidebar -->
+        <div id="quiz-bookmark-layout" class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_280px] gap-5 items-start mb-6">
+        <!-- Main Quiz Question Card -->
+        <div id="quiz-card" class="glass-card rounded-3xl p-5 md:p-8 border border-slate-800 glow-indigo relative transition-all">
+            
+            <!-- Question Meta Header -->
+            <div class="flex flex-wrap justify-between items-center gap-3 mb-4 pb-3 border-b border-slate-800/80">
+                <span id="question-badge" class="px-3 py-1 bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 text-xs font-bold rounded-full">
+                    প্রশ্ন ১ / ০
+                </span>
+                <div class="flex flex-wrap items-center gap-2">
+                    <span class="text-xs text-slate-400 bg-slate-900/80 px-3 py-1 rounded-full border border-slate-800">জারক ও বিজারক পদার্থ (C-03)</span>
+                    <button id="bookmark-current-btn" onclick="toggleCurrentBookmark()" aria-pressed="false" class="animated-btn px-3 py-1.5 rounded-xl text-xs md:text-sm font-semibold bg-amber-500/10 text-amber-300 hover:bg-amber-500/20 border border-amber-500/30">☆ বুকমার্ক করুন</button>
+                </div>
+            </div>
+
+            <!-- Question Title -->
+            <h2 id="question-text" class="text-lg md:text-2xl font-bold text-slate-100 mb-6 leading-relaxed">
+                কোনো প্রশ্ন লোড করা হয়নি।
+            </h2>
+
+            <!-- MCQ Options Container -->
+            <div id="options-container" class="space-y-3 mb-6">
+                <!-- Options injected by JS -->
+            </div>
+
+            <!-- Instant Fact & Explanation Box (Shown after answering) -->
+            <div id="rationale-box" class="hidden mb-6 p-4 rounded-2xl border transition-all text-sm leading-relaxed">
+                <div id="rationale-title" class="font-bold mb-1 flex items-center gap-2 text-base">
+                    <!-- Icon + Title -->
+                </div>
+                <p id="rationale-text" class="text-slate-300"></p>
+            </div>
+
+            <!-- Footer Navigation Controls -->
+            <div class="flex justify-between items-center pt-4 border-t border-slate-800/80">
+                <button id="prev-btn" onclick="navigateQuestion(-1)" class="animated-btn px-4 py-2.5 rounded-xl text-sm font-semibold bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700/60 disabled:opacity-30 disabled:cursor-not-allowed flex items-center gap-1">
+                    ← পূর্ববর্তী
+                </button>
+                <button id="next-btn" onclick="navigateQuestion(1)" class="animated-btn px-6 py-2.5 rounded-xl text-sm font-semibold bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white shadow-lg shadow-indigo-600/30 flex items-center gap-1">
+                    পরবর্তী →
+                </button>
+            </div>
+        </div>
+
+        
+        <!-- Bookmarked Questions Sidebar -->
+        <aside id="bookmark-sidebar" class="glass-card rounded-3xl p-4 border border-amber-500/20 lg:sticky lg:top-28">
+            <div class="flex items-center justify-between gap-2 mb-2">
+                <h2 class="text-base font-bold text-amber-300">★ বুকমার্ক করা প্রশ্ন</h2>
+                <span id="bookmark-count" class="text-xs font-bold text-amber-200 bg-amber-500/10 border border-amber-500/20 rounded-full px-2 py-1">0</span>
+            </div>
+            <p class="text-xs text-slate-400 mb-3">গুরুত্বপূর্ণ বা ভুল হওয়া প্রশ্ন এখানে জমা থাকবে। যেকোনো প্রশ্নে চাপ দিলে সরাসরি সেখানে যেতে পারবেন।</p>
+            <div id="bookmark-list" class="space-y-2 max-h-[42vh] overflow-y-auto pr-1">
+                <p class="text-sm text-slate-500 py-3 text-center">এখনও কোনো প্রশ্ন বুকমার্ক করা হয়নি।</p>
+            </div>
+            <div class="grid grid-cols-2 gap-2 mt-4 pt-3 border-t border-slate-800">
+                <button onclick="exportBookmarks()" class="animated-btn px-2 py-2 rounded-xl text-xs font-semibold bg-indigo-500/10 text-indigo-300 hover:bg-indigo-500/20 border border-indigo-500/20">⬇ ব্যাকআপ</button>
+                <button onclick="document.getElementById('bookmark-import-input').click()" class="animated-btn px-2 py-2 rounded-xl text-xs font-semibold bg-slate-800 text-slate-200 hover:bg-slate-700 border border-slate-700">⬆ রিস্টোর</button>
+            </div>
+            <input id="bookmark-import-input" type="file" accept="application/json,.json" class="hidden" onchange="importBookmarks(event)">
+            <p class="text-[11px] text-slate-500 mt-2 leading-relaxed">অন্য ব্রাউজার বা ডিভাইসে নিতে ব্যাকআপ ডাউনলোড করে সেখানে রিস্টোর করুন।</p>
+        </aside>
+        </div>
+
+        <!-- Quiz Completion Results Screen -->
+        <div id="result-screen" class="hidden glass-card rounded-3xl p-6 md:p-10 text-center border border-slate-800 glow-emerald">
+            <div class="w-20 h-20 mx-auto mb-4 rounded-3xl bg-gradient-to-tr from-emerald-500 to-teal-500 flex items-center justify-center text-4xl shadow-xl shadow-emerald-500/20 text-white">
+                🏆
+            </div>
+            <h2 class="text-2xl md:text-3xl font-bold text-white mb-2">কুইজ সম্পন্ন হয়েছে!</h2>
+            <p class="text-slate-400 text-sm mb-6">আপনার চূড়ান্ত ফলাফলের বিবরণ নিচে দেওয়া হলো</p>
+
+            <!-- Results Metrics -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-8">
+                <div class="bg-slate-950/80 p-4 rounded-2xl border border-slate-800">
+                    <span class="text-xs text-slate-400 block mb-1">মোট প্রশ্ন</span>
+                    <span id="res-total" class="text-2xl font-bold text-indigo-400">0</span>
+                </div>
+                <div class="bg-slate-950/80 p-4 rounded-2xl border border-slate-800">
+                    <span class="text-xs text-slate-400 block mb-1">সঠিক উত্তর</span>
+                    <span id="res-correct" class="text-2xl font-bold text-emerald-400">0</span>
+                </div>
+                <div class="bg-slate-950/80 p-4 rounded-2xl border border-slate-800">
+                    <span class="text-xs text-slate-400 block mb-1">ভুল উত্তর</span>
+                    <span id="res-wrong" class="text-2xl font-bold text-rose-400">0</span>
+                </div>
+                <div class="bg-slate-950/80 p-4 rounded-2xl border border-slate-800">
+                    <span class="text-xs text-slate-400 block mb-1">সাফল্যের হার</span>
+                    <span id="res-accuracy" class="text-2xl font-bold text-amber-400">0%</span>
+                </div>
+            </div>
+
+            <!-- Action Controls -->
+            <div class="flex flex-wrap justify-center gap-3">
+                <button onclick="restartQuiz()" class="animated-btn px-6 py-3 rounded-xl font-bold text-sm bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white shadow-lg shadow-indigo-600/30">
+                    🔄 পুনরায় পরীক্ষা দিন
+                </button>
+                <button onclick="toggleReviewMode()" class="animated-btn px-6 py-3 rounded-xl font-bold text-sm bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700">
+                    📋 উত্তর পর্যালোচনা (Review)
+                </button>
+            </div>
+
+            <!-- Detailed Review Container -->
+            <div id="review-container" class="hidden mt-8 text-left space-y-4 pt-6 border-t border-slate-800">
+                <h3 class="text-lg font-bold text-slate-200 mb-4 flex items-center gap-2">
+                    <span>📌</span> সকল প্রশ্নের বিস্তারিত পর্যালোচনা
+                </h3>
+                <div id="review-list" class="space-y-4 max-h-[500px] overflow-y-auto pr-2">
+                    <!-- Dynamic review list items -->
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Reset Confirmation Modal -->
+    <div id="reset-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="glass-card border border-slate-800 rounded-3xl p-6 max-w-sm w-full text-center shadow-2xl">
+            <div class="w-12 h-12 mx-auto mb-3 rounded-2xl bg-rose-500/10 text-rose-400 border border-rose-500/20 flex items-center justify-center text-xl font-bold">
+                ⚠️
+            </div>
+            <h3 class="text-lg font-bold text-white mb-2">কুইজ রিসেট করতে চান?</h3>
+            <p class="text-xs text-slate-400 mb-6">আপনার বর্তমান ফলাফল এবং উত্তরসমূহ মুছে পুনরায় শুরু হবে।</p>
+            <div class="flex gap-3 justify-center">
+                <button onclick="closeResetModal()" class="animated-btn px-4 py-2.5 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300">
+                    বাতিল
+                </button>
+                <button onclick="executeReset()" class="animated-btn px-5 py-2.5 rounded-xl text-xs font-semibold bg-rose-600 hover:bg-rose-500 text-white shadow-lg shadow-rose-600/30">
+                    হ্যাঁ, রিসেট করুন
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-4 border-t border-slate-800/80 text-center text-xs text-slate-500">
+       Skull of Chem • জারক ও বিজারক পদার্থ MCQ Practice
+    </footer>
+
+    <script>
+        // =========================================================================
+        // EMPTY QUIZ DATA SKELETON
+        // =========================================================================
+        const quizData = [{"id":1,"question":"নিচের কোনটি গ্যাসীয় জারক পদার্থ?","options":["H₂","F₂","CO","H₂S"],"correct":1,"fact":"ফ্লোরিন (F₂) ছবির তালিকায় গ্যাসীয় জারক পদার্থ হিসেবে দেওয়া আছে।"},{"id":2,"question":"নিচের কোন সেটে শুধু ছবিতে উল্লিখিত গ্যাসীয় জারক পদার্থ রয়েছে?","options":["F₂, Cl₂, O₂, O₃, SO₂, NO₂","H₂, CO, H₂S, H₂O₂","HNO₂, H₂SO₃, HBr, HI","KMnO₄, K₂Cr₂O₇, FeSO₄"],"correct":0,"fact":"ছবির গ্যাসীয় জারকের তালিকায় F₂, Cl₂, O₂, O₃, SO₂ ও NO₂ রয়েছে।"},{"id":3,"question":"ওজোনের রাসায়নিক সংকেত কোনটি?","options":["O₂","O₃","SO₂","NO₂"],"correct":1,"fact":"ওজোনের রাসায়নিক সংকেত O₃।"},{"id":4,"question":"ছবির তালিকায় কোন গ্যাসটি জারক ও বিজারক—দুই তালিকাতেই রয়েছে?","options":["F₂","O₃","SO₂","H₂"],"correct":2,"fact":"SO₂ গ্যাসীয় জারক ও গ্যাসীয় বিজারক—দুই তালিকাতেই উল্লেখ করা হয়েছে।"},{"id":5,"question":"নিচের কোনটি তরল জারক পদার্থ?","options":["KMnO₄","H₂O₂","FeCl₃","K₂Cr₂O₇"],"correct":1,"fact":"হাইড্রোজেন পারঅক্সাইড (H₂O₂) ছবিতে তরল জারক পদার্থের উদাহরণ।"},{"id":6,"question":"ছবির তালিকা অনুযায়ী কোনটি তরল জারক পদার্থের উদাহরণ?","options":["তরল ব্রোমিন (Br₂)","ক্লোরিন (Cl₂)","কার্বন মনোক্সাইড (CO)","কার্বন (C)"],"correct":0,"fact":"তরল ব্রোমিন (Br₂) তরল জারকের উদাহরণ হিসেবে দেওয়া আছে।"},{"id":7,"question":"নিচের কোন জোড়াটি ছবির তালিকায় তরল জারক পদার্থ হিসেবে আছে?","options":["HNO₃ ও গাঢ় H₂SO₄","HBr ও HI","FeSO₄ ও FeCl₂","H₂S ও CO"],"correct":0,"fact":"নাইট্রিক অ্যাসিড (HNO₃) ও গাঢ় সালফিউরিক অ্যাসিড (H₂SO₄) তরল জারকের উদাহরণ।"},{"id":8,"question":"নিচের কোন সেটে শুধু ছবিতে উল্লিখিত কঠিন জারক পদার্থ রয়েছে?","options":["I₂, KMnO₄, K₂Cr₂O₇, KClO₃, MnO₂, FeCl₃","H₂, CO, H₂S, SO₂","HNO₂, H₂SO₃, HBr, HI","FeSO₄, FeCl₂, SnCl₂, C"],"correct":0,"fact":"ছবিতে I₂, KMnO₄, K₂Cr₂O₇, KClO₃, MnO₂ ও FeCl₃ কঠিন জারক হিসেবে উল্লেখ করা হয়েছে।"},{"id":9,"question":"পটাশিয়াম পারম্যাঙ্গানেটের সংকেত কোনটি?","options":["K₂Cr₂O₇","KClO₃","KMnO₄","MnO₂"],"correct":2,"fact":"পটাশিয়াম পারম্যাঙ্গানেটের সংকেত KMnO₄।"},{"id":10,"question":"পটাশিয়াম ডাইক্রোমেটের সংকেত কোনটি?","options":["K₂Cr₂O₇","KMnO₄","KClO₃","FeCl₃"],"correct":0,"fact":"পটাশিয়াম ডাইক্রোমেটের সংকেত K₂Cr₂O₇।"},{"id":11,"question":"পটাশিয়াম ক্লোরেটের রাসায়নিক সংকেত কোনটি?","options":["KCl","KClO₃","K₂Cr₂O₇","KMnO₄"],"correct":1,"fact":"পটাশিয়াম ক্লোরেটের সংকেত KClO₃।"},{"id":12,"question":"ম্যাঙ্গানিজ ডাইঅক্সাইডের সংকেত কোনটি?","options":["MnO","Mn₂O₃","MnO₂","KMnO₄"],"correct":2,"fact":"ম্যাঙ্গানিজ ডাইঅক্সাইডের সংকেত MnO₂।"},{"id":13,"question":"ছবিতে কোনটি কঠিন জারক হিসেবে উল্লেখ করা হয়েছে?","options":["HI","I₂","HIO₃","NaI"],"correct":1,"fact":"কঠিন আয়োডিনের সংকেত I₂; ছবিতে এটি কঠিন জারকের উদাহরণ।"},{"id":14,"question":"ফেরিক ক্লোরাইডের রাসায়নিক সংকেত কোনটি?","options":["FeCl₂","FeSO₄","FeCl₃","Fe₂O₃"],"correct":2,"fact":"ফেরিক ক্লোরাইডের সংকেত FeCl₃।"},{"id":15,"question":"নিচের কোনটি ছবির তালিকায় কঠিন জারক নয়, বরং কঠিন বিজারকের উদাহরণ?","options":["KMnO₄","K₂Cr₂O₇","FeCl₃","SnCl₂"],"correct":3,"fact":"SnCl₂ বা স্ট্যানাস ক্লোরাইড ছবিতে কঠিন বিজারক পদার্থের তালিকায় আছে।"},{"id":16,"question":"নিচের কোনটি গ্যাসীয় বিজারক পদার্থ?","options":["H₂","KMnO₄","FeCl₃","K₂Cr₂O₇"],"correct":0,"fact":"হাইড্রোজেন গ্যাস (H₂) ছবির গ্যাসীয় বিজারক পদার্থের উদাহরণ।"},{"id":17,"question":"ছবির তালিকা অনুযায়ী কোন সেটে সব গ্যাসীয় বিজারক পদার্থ রয়েছে?","options":["F₂, Cl₂, O₂, O₃","H₂, CO, H₂S, SO₂","HNO₂, H₂SO₃, HBr, HI","I₂, KMnO₄, MnO₂, FeCl₃"],"correct":1,"fact":"ছবিতে H₂, CO, H₂S ও SO₂ গ্যাসীয় বিজারক হিসেবে উল্লেখিত।"},{"id":18,"question":"কার্বন মনোক্সাইডের রাসায়নিক সংকেত কোনটি?","options":["CO₂","CO","C₂O","H₂CO₃"],"correct":1,"fact":"কার্বন মনোক্সাইডের সংকেত CO।"},{"id":19,"question":"ছবির শ্রেণিবিভাগ অনুযায়ী কোনটি গ্যাসীয় বিজারক?","options":["H₂S","NO₂","O₃","F₂"],"correct":0,"fact":"H₂S ছবির গ্যাসীয় বিজারক পদার্থের তালিকায় রয়েছে।"},{"id":20,"question":"সালফার ডাইঅক্সাইড (SO₂) সম্পর্কে কোন বক্তব্যটি ছবির তালিকার সঙ্গে মেলে?","options":["এটি শুধু কঠিন জারক","এটি শুধু তরল বিজারক","এটি গ্যাসীয় জারক ও গ্যাসীয় বিজারক—উভয় তালিকায় আছে","এটি কেবল কঠিন বিজারক"],"correct":2,"fact":"SO₂-কে ছবিতে গ্যাসীয় জারক ও গ্যাসীয় বিজারক—উভয় হিসেবে তালিকাভুক্ত করা হয়েছে।"},{"id":21,"question":"নিচের কোন সেটে ছবির তালিকাভুক্ত সব তরল বিজারক পদার্থ রয়েছে?","options":["HNO₂, H₂SO₃, HBr, HI","HNO₃, H₂SO₄, H₂O₂, Br₂","FeSO₄, FeCl₂, SnCl₂, Hg₂Cl₂","F₂, Cl₂, O₂, O₃"],"correct":0,"fact":"ছবির তরল বিজারকের তালিকায় HNO₂, H₂SO₃, HBr ও HI রয়েছে।"},{"id":22,"question":"নাইট্রাস অ্যাসিডের সংকেত কোনটি?","options":["HNO₃","HNO₂","H₂SO₃","H₂SO₄"],"correct":1,"fact":"নাইট্রাস অ্যাসিডের সংকেত HNO₂।"},{"id":23,"question":"সালফিউরাস অ্যাসিডের সংকেত কোনটি?","options":["H₂SO₄","H₂S","H₂SO₃","SO₃"],"correct":2,"fact":"সালফিউরাস অ্যাসিডের সংকেত H₂SO₃।"},{"id":24,"question":"হাইড্রোব্রোমিক অ্যাসিডের সংকেত কোনটি?","options":["HBr","HBrO₃","Br₂","HBO₂"],"correct":0,"fact":"হাইড্রোব্রোমিক অ্যাসিডের সংকেত HBr।"},{"id":25,"question":"হাইড্রোআয়োডিক অ্যাসিডের সংকেত কোনটি?","options":["I₂","HI","HIO₃","HIO₄"],"correct":1,"fact":"হাইড্রোআয়োডিক অ্যাসিডের সংকেত HI।"},{"id":26,"question":"ছবির তালিকা অনুযায়ী কোনগুলো কঠিন বিজারকের উদাহরণ?","options":["অধিকাংশ ধাতু ও কার্বন","ফ্লোরিন ও ক্লোরিন","নাইট্রিক অ্যাসিড ও গাঢ় সালফিউরিক অ্যাসিড","ওজোন ও নাইট্রোজেন ডাইঅক্সাইড"],"correct":0,"fact":"ছবিতে অধিকাংশ ধাতু ও কার্বনকে কঠিন বিজারক পদার্থের উদাহরণ বলা হয়েছে।"},{"id":27,"question":"কোন জোড়াটি ছবিতে কঠিন বিজারক হিসেবে দেওয়া ফেরাস লবণ?","options":["FeCl₃ ও Fe₂O₃","FeSO₄ ও FeCl₂","FeCl₃ ও FeSO₄","FeO ও Fe₂O₃"],"correct":1,"fact":"ফেরাস সালফেট (FeSO₄) ও ফেরাস ক্লোরাইড (FeCl₂) কঠিন বিজারকের উদাহরণ।"},{"id":28,"question":"স্ট্যানাস ক্লোরাইডের সংকেত কোনটি?","options":["SnCl₂","SnCl₄","SnO₂","SnSO₄"],"correct":0,"fact":"স্ট্যানাস ক্লোরাইডের সংকেত SnCl₂।"},{"id":29,"question":"মার্কিউরাস ক্লোরাইডের সংকেত কোনটি?","options":["HgCl₂","Hg₂Cl₂","HgO","HgS"],"correct":1,"fact":"মার্কিউরাস ক্লোরাইডের সংকেত Hg₂Cl₂।"},{"id":30,"question":"অক্সালিক অ্যাসিড ডাইহাইড্রেটের সংকেত কোনটি?","options":["H₂C₂O₄","H₂C₂O₄·2H₂O","H₂CO₃","Na₂C₂O₄"],"correct":1,"fact":"অক্সালিক অ্যাসিড ডাইহাইড্রেটের সংকেত H₂C₂O₄·2H₂O।"},{"id":31,"question":"সোডিয়াম থায়োসালফেট পেন্টাহাইড্রেটের সংকেত কোনটি?","options":["Na₂SO₄","Na₂S₂O₃","Na₂S₂O₃·5H₂O","Na₂SO₃·5H₂O"],"correct":2,"fact":"সোডিয়াম থায়োসালফেট পেন্টাহাইড্রেটের সংকেত Na₂S₂O₃·5H₂O।"},{"id":32,"question":"নিচের কোনটি উপযুক্ত বিক্রিয়ায় জারক ও বিজারক—উভয় হিসেবে কাজ করতে পারে?","options":["H₂O₂","KMnO₄","F₂","K₂Cr₂O₇"],"correct":0,"fact":"H₂O₂-এ অক্সিজানের জারণ সংখ্যা −1; তাই পরিস্থিতি অনুযায়ী এটি জারিত বা বিজারিত হতে পারে।"},{"id":33,"question":"নিচের কোন পদার্থটি ছবির জারক ও বিজারক—উভয় তালিকায় আছে এবং উভয় ভূমিকা পালন করতে পারে?","options":["H₂S","SO₂","FeCl₃","KClO₃"],"correct":1,"fact":"SO₂-এ সালফারের জারণ সংখ্যা +4, তাই এটি উপযুক্ত বিক্রিয়ায় বাড়তেও বা কমতেও পারে।"},{"id":34,"question":"নাইট্রাস অ্যাসিড (HNO₂) জারক ও বিজারক—উভয় হিসেবে কাজ করতে পারে কেন?","options":["নাইট্রোজেনের জারণ সংখ্যা সর্বনিম্ন","নাইট্রোজেনের জারণ সংখ্যা সর্বোচ্চ","নাইট্রোজেনের জারণ সংখ্যা মধ্যবর্তী অবস্থায় থাকায় তা বাড়তে বা কমতে পারে","HNO₂-তে নাইট্রোজেন নেই"],"correct":2,"fact":"HNO₂-তে নাইট্রোজেনের জারণ সংখ্যা +3; এটি উচ্চতর বা নিম্নতর জারণ অবস্থায় যেতে পারে।"},{"id":35,"question":"H₂SO₃-এ সালফারের জারণ সংখ্যা কত?","options":["−2","0","+4","+6"],"correct":2,"fact":"H₂SO₃-এ 2(+1) + S + 3(−2) = 0; সুতরাং S = +4।"},{"id":36,"question":"নিচের কোন যৌগে নাইট্রোজেনের জারণ সংখ্যা +4 এবং উপযুক্ত বিক্রিয়ায় উভয় রেডক্স ভূমিকা সম্ভব?","options":["NH₃","NO₂","HNO₃","NaNO₃"],"correct":1,"fact":"NO₂-তে অক্সিজেনের মোট জারণ সংখ্যা −4, তাই নাইট্রোজেনের জারণ সংখ্যা +4।"},{"id":37,"question":"সাধারণ জারণ-বিজারণ বিক্রিয়ায় নিচের কোনটি জারক হিসেবে কাজ করতে পারে না, কারণ এতে সালফারের জারণ সংখ্যা সর্বনিম্ন সাধারণ অবস্থায় আছে?","options":["H₂O₂","KMnO₄","H₂S","HNO₃"],"correct":2,"fact":"H₂S-এ সালফারের জারণ সংখ্যা −2; সাধারণ রেডক্স বিক্রিয়ায় এটি আরও বিজারিত না হয়ে সাধারণত জারিত হয়, তাই বিজারক হিসেবে কাজ করে।"},{"id":38,"question":"সাধারণ জারণ-বিজারণ বিক্রিয়ায় নিচের কোনটি বিজারক হিসেবে কাজ করে না?","options":["SO₂","H₂O₂","HNO₂","F₂"],"correct":3,"fact":"ফ্লোরিনের তড়িৎঋণাত্মকতা অত্যন্ত বেশি; সাধারণ রেডক্স বিক্রিয়ায় এটি জারক হিসেবে ইলেকট্রন গ্রহণ করে।"},{"id":39,"question":"নিচের কোনটি প্রধানত জারক হিসেবে কাজ করে, বিজারক হিসেবে নয়?","options":["H₂S","HI","KMnO₄","CO"],"correct":2,"fact":"KMnO₄-এ Mn-এর জারণ সংখ্যা +7, যা সাধারণত হ্রাস পেয়ে পদার্থটিকে জারক হিসেবে কাজ করায়।"},{"id":40,"question":"নিচের কোন জোড়ার উভয় পদার্থই সাধারণত বিজারক হিসেবে কাজ করে এবং আরও জারিত হতে পারে?","options":["H₂S ও HI","KMnO₄ ও K₂Cr₂O₇","F₂ ও O₃","HNO₃ ও KClO₃"],"correct":0,"fact":"H₂S-এ S-এর জারণ সংখ্যা −2 এবং HI-তে I-এর −1; উপযুক্ত বিক্রিয়ায় উভয়ই ইলেকট্রন দান করে জারিত হতে পারে।"},{"id":41,"question":"বিজারক পদার্থের সঠিক বৈশিষ্ট্য কোনটি?","options":["ইলেকট্রন গ্রহণ করে এবং নিজে বিজারিত হয়","ইলেকট্রন ত্যাগ করে এবং নিজে জারিত হয়","সব সময় অক্সিজেন ত্যাগ করে","কখনো জারণ সংখ্যা পরিবর্তন করে না"],"correct":1,"fact":"বিজারক ইলেকট্রন দান করে অন্য পদার্থকে বিজারিত করে; ফলে নিজে জারিত হয়।"},{"id":42,"question":"KMnO₄-এ ম্যাঙ্গানিজের জারণ সংখ্যা কত?","options":["+2","+4","+6","+7"],"correct":3,"fact":"K-এর জারণ সংখ্যা +1 এবং চারটি O-এর মোট −8; তাই Mn = +7।"},{"id":43,"question":"H₂O₂-এ অক্সিজেনের জারণ সংখ্যা কত?","options":["−2","−1","0","+1"],"correct":1,"fact":"পারঅক্সাইডে অক্সিজেনের জারণ সংখ্যা −1।"},{"id":44,"question":"ক্ষার ধাতুগুলোর ইলেকট্রন ত্যাগের প্রবণতা বৃদ্ধির ক্রম কোনটি?","options":["Li < K < Na < Rb < Cs","Li < Na < K < Rb < Cs","Cs < Rb < Na < K < Li","K < Li < Na < Rb < Cs"],"correct":0,"fact":""},{"id":45,"question":"কোন ধাতুর ইলেকট্রন ত্যাগের প্রবণতা সবচেয়ে বেশি?","options":["Li","K","Na","Cs"],"correct":3,"fact":""}];
+
+        let currentQuestionIdx = 0;
+        let userAnswers = new Array(quizData.length).fill(null);
+
+        // Bookmarks are saved in this browser automatically. Use backup/restore to transfer them.
+        const BOOKMARK_STORAGE_KEY = 'chem_oxidizing_reducing_agents_bookmarks_v1';
+        const BOOKMARK_QUIZ_KEY = 'chem_oxidizing_reducing_agents';
+        const BOOKMARK_QUIZ_TITLE = 'জারক ও বিজারক পদার্থ (C-01)';
+        let bookmarkedQuestionIds = loadBookmarkedQuestionIds();
+
+        function loadBookmarkedQuestionIds() {
+            try {
+                const saved = JSON.parse(localStorage.getItem(BOOKMARK_STORAGE_KEY) || '[]');
+                if (!Array.isArray(saved)) return [];
+                const validIds = new Set(quizData.map(q => q.id));
+                return [...new Set(saved.map(Number).filter(id => Number.isInteger(id) && validIds.has(id)))];
+            } catch (error) {
+                console.warn('Could not load saved bookmarks:', error);
+                return [];
+            }
+        }
+
+        function saveBookmarkedQuestionIds() {
+            try {
+                localStorage.setItem(BOOKMARK_STORAGE_KEY, JSON.stringify(bookmarkedQuestionIds));
+                return true;
+            } catch (error) {
+                alert('এই ব্রাউজারে বুকমার্ক স্বয়ংক্রিয়ভাবে সংরক্ষণ করা যায়নি। ব্যাকআপ ডাউনলোড করে রাখুন।');
+                console.error('Could not save bookmarks:', error);
+                return false;
+            }
+        }
+
+        function toggleCurrentBookmark() {
+            const question = quizData[currentQuestionIdx];
+            if (!question) return;
+            if (bookmarkedQuestionIds.includes(question.id)) {
+                bookmarkedQuestionIds = bookmarkedQuestionIds.filter(id => id !== question.id);
+            } else {
+                bookmarkedQuestionIds.push(question.id);
+            }
+            saveBookmarkedQuestionIds();
+            updateBookmarkUI();
+        }
+
+        function updateBookmarkUI() {
+            const question = quizData[currentQuestionIdx];
+            const button = document.getElementById('bookmark-current-btn');
+            if (button && question) {
+                const saved = bookmarkedQuestionIds.includes(question.id);
+                button.textContent = saved ? '★ বুকমার্ক করা হয়েছে' : '☆ বুকমার্ক করুন';
+                button.setAttribute('aria-pressed', String(saved));
+                button.className = saved
+                    ? 'animated-btn px-3 py-1.5 rounded-xl text-xs md:text-sm font-semibold bg-amber-500/20 text-amber-200 hover:bg-amber-500/30 border border-amber-400/50'
+                    : 'animated-btn px-3 py-1.5 rounded-xl text-xs md:text-sm font-semibold bg-amber-500/10 text-amber-300 hover:bg-amber-500/20 border border-amber-500/30';
+            }
+
+            const list = document.getElementById('bookmark-list');
+            const count = document.getElementById('bookmark-count');
+            if (!list || !count) return;
+            count.textContent = bookmarkedQuestionIds.length;
+            list.innerHTML = '';
+            if (bookmarkedQuestionIds.length === 0) {
+                const empty = document.createElement('p');
+                empty.className = 'text-sm text-slate-500 py-3 text-center';
+                empty.textContent = 'এখনও কোনো প্রশ্ন বুকমার্ক করা হয়নি।';
+                list.appendChild(empty);
+                return;
+            }
+
+            bookmarkedQuestionIds
+                .map(id => quizData.find(q => q.id === id))
+                .filter(Boolean)
+                .sort((a, b) => a.id - b.id)
+                .forEach(q => {
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.className = 'w-full text-left p-3 rounded-xl bg-slate-900/70 hover:bg-amber-500/10 border border-slate-800 hover:border-amber-500/40 transition-colors';
+                    const number = document.createElement('span');
+                    number.className = 'block text-xs font-bold text-amber-300 mb-1';
+                    number.textContent = '★ প্রশ্ন ' + q.id;
+                    const text = document.createElement('span');
+                    text.className = 'block text-sm text-slate-200 leading-relaxed';
+                    text.textContent = q.question;
+                    btn.append(number, text);
+                    btn.addEventListener('click', () => jumpToQuestion(quizData.findIndex(item => item.id === q.id)));
+                    list.appendChild(btn);
+                });
+        }
+
+        function exportBookmarks() {
+            const backup = {
+                version: 1,
+                quizKey: BOOKMARK_QUIZ_KEY,
+                quiz: BOOKMARK_QUIZ_TITLE,
+                exportedAt: new Date().toISOString(),
+                bookmarks: bookmarkedQuestionIds
+            };
+            const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'Jarak-Bijarak-bookmarks-backup.json';
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
+        }
+
+        function importBookmarks(event) {
+            const file = event.target.files && event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = () => {
+                try {
+                    const data = JSON.parse(String(reader.result || ''));
+                    if (!Array.isArray(data)) {
+                        if ((data.quizKey && data.quizKey !== BOOKMARK_QUIZ_KEY) ||
+                            (data.quiz && data.quiz !== BOOKMARK_QUIZ_TITLE)) {
+                            throw new Error('Backup belongs to another quiz');
+                        }
+                    }
+                    const ids = Array.isArray(data) ? data : data.bookmarks;
+                    if (!Array.isArray(ids)) throw new Error('Invalid bookmark backup format');
+                    const validIds = new Set(quizData.map(q => q.id));
+                    const imported = ids.map(Number).filter(id => Number.isInteger(id) && validIds.has(id));
+                    bookmarkedQuestionIds = [...new Set([...bookmarkedQuestionIds, ...imported])];
+                    saveBookmarkedQuestionIds();
+                    updateBookmarkUI();
+                    alert(imported.length + 'টি বুকমার্ক রিস্টোর করা হয়েছে। আগের বুকমার্কগুলোও রাখা হয়েছে।');
+                } catch (error) {
+                    alert('এই অধ্যায়ের সঠিক bookmark backup JSON ফাইল নির্বাচন করুন। অন্য অধ্যায়ের ব্যাকআপ নেওয়া যাবে না।');
+                    console.error('Could not import bookmarks:', error);
+                } finally {
+                    event.target.value = '';
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // DOM Element Caching
+        const questionBadge = document.getElementById('question-badge');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const rationaleBox = document.getElementById('rationale-box');
+        const rationaleTitle = document.getElementById('rationale-title');
+        const rationaleText = document.getElementById('rationale-text');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const navGrid = document.getElementById('nav-grid');
+
+        const statTotal = document.getElementById('stat-total');
+        const statAnswered = document.getElementById('stat-answered');
+        const statScore = document.getElementById('stat-score');
+        const progressBar = document.getElementById('progress-bar');
+        const completionTag = document.getElementById('completion-tag');
+
+        function initQuiz() {
+            statTotal.innerText = quizData.length;
+            userAnswers = new Array(quizData.length).fill(null);
+            buildNavigatorGrid();
+            if (quizData.length > 0) {
+                renderQuestion(0);
+            } else {
+                questionText.innerText = "জারক ও বিজারক পদার্থের প্রশ্ন লোড করা হয়নি।";
+            }
+            updateStats();
+        }
+
+        function buildNavigatorGrid() {
+            navGrid.innerHTML = '';
+            quizData.forEach((item, idx) => {
+                const btn = document.createElement('button');
+                btn.id = `nav-btn-${idx}`;
+                btn.innerText = item.id;
+                btn.onclick = () => jumpToQuestion(idx);
+                btn.className = `w-8 h-8 rounded-lg text-xs font-bold flex items-center justify-center transition-all border ${getNavBtnClass(idx)}`;
+                navGrid.appendChild(btn);
+            });
+        }
+
+        function getNavBtnClass(idx) {
+            if (idx === currentQuestionIdx) {
+                return "bg-indigo-600 text-white border-indigo-400 ring-2 ring-indigo-500/50 shadow-md";
+            }
+            if (userAnswers[idx] !== null) {
+                const isCorrect = userAnswers[idx] === quizData[idx].correct;
+                return isCorrect 
+                    ? "bg-emerald-950/80 text-emerald-400 border-emerald-800" 
+                    : "bg-rose-950/80 text-rose-400 border-rose-800";
+            }
+            return "bg-slate-900/80 text-slate-400 border-slate-800 hover:bg-slate-800";
+        }
+
+        function updateNavigator() {
+            quizData.forEach((_, idx) => {
+                const btn = document.getElementById(`nav-btn-${idx}`);
+                if (btn) {
+                    btn.className = `w-8 h-8 rounded-lg text-xs font-bold flex items-center justify-center transition-all border ${getNavBtnClass(idx)}`;
+                }
+            });
+        }
+
+        function renderQuestion(idx) {
+            if (quizData.length === 0) return;
+            currentQuestionIdx = idx;
+            const item = quizData[idx];
+
+            questionBadge.innerText = `প্রশ্ন ${item.id} (ক্রমিক ${idx + 1} / ${quizData.length})`;
+            questionText.innerText = item.question;
+
+            optionsContainer.innerHTML = '';
+            const userAns = userAnswers[idx];
+
+            const optionPrefixes = ['ক', 'খ', 'গ', 'ঘ'];
+
+            item.options.forEach((optText, optIdx) => {
+                const btn = document.createElement('button');
+                btn.onclick = () => selectOption(optIdx);
+
+                let btnStyle = "bg-slate-900/60 hover:bg-slate-800/80 border-slate-800 text-slate-200";
+
+                if (userAns !== null) {
+                    if (optIdx === item.correct) {
+                        btnStyle = "bg-emerald-950/50 border-emerald-500/80 text-emerald-200 font-medium";
+                    } else if (optIdx === userAns) {
+                        btnStyle = "bg-rose-950/50 border-rose-500/80 text-rose-200";
+                    } else {
+                        btnStyle = "bg-slate-950/30 border-slate-900 text-slate-500 opacity-50";
+                    }
+                }
+
+                btn.className = `w-full text-left p-4 rounded-2xl border text-sm md:text-base transition-all duration-200 flex items-center justify-between group ${btnStyle}`;
+                
+                btn.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <span class="w-7 h-7 rounded-xl border border-slate-700 bg-slate-900/80 flex items-center justify-center text-xs font-bold text-slate-400 flex-shrink-0 group-hover:border-indigo-500 transition-colors">
+                            ${optionPrefixes[optIdx]}
+                        </span>
+                        <span>${optText}</span>
+                    </div>
+                    ${userAns !== null && optIdx === item.correct ? '<span class="text-emerald-400 font-bold text-base">✓</span>' : ''}
+                    ${userAns !== null && optIdx === userAns && optIdx !== item.correct ? '<span class="text-rose-400 font-bold text-base">✕</span>' : ''}
+                `;
+
+                if (userAns !== null) {
+                    btn.disabled = true;
+                }
+
+                optionsContainer.appendChild(btn);
+            });
+
+            if (userAns !== null) {
+                rationaleBox.classList.remove('hidden');
+                const isCorrect = userAns === item.correct;
+                if (isCorrect) {
+                    rationaleBox.className = "mb-6 p-4 rounded-2xl border border-emerald-500/30 bg-emerald-950/30 text-emerald-300 text-sm";
+                    rationaleTitle.innerHTML = "<span class='text-emerald-400'>✓ সঠিক উত্তর!</span>";
+                } else {
+                    rationaleBox.className = "mb-6 p-4 rounded-2xl border border-rose-500/30 bg-rose-950/30 text-rose-300 text-sm";
+                    rationaleTitle.innerHTML = "<span class='text-rose-400'>✕ ভুল উত্তর! সঠিক উত্তর হলো: " + optionPrefixes[item.correct] + "</span>";
+                }
+                rationaleText.innerText = item.fact;
+            } else {
+                rationaleBox.classList.add('hidden');
+            }
+
+            prevBtn.disabled = idx === 0;
+            if (idx === quizData.length - 1) {
+                nextBtn.innerText = "ফলাফল দেখুন 🏆";
+            } else {
+                nextBtn.innerText = "পরবর্তী →";
+            }
+
+            updateNavigator();
+            updateBookmarkUI();
+        }
+
+        function selectOption(optIdx) {
+            if (userAnswers[currentQuestionIdx] !== null) return;
+
+            userAnswers[currentQuestionIdx] = optIdx;
+            renderQuestion(currentQuestionIdx);
+            updateStats();
+
+            const answeredCount = userAnswers.filter(a => a !== null).length;
+            if (answeredCount === quizData.length) {
+                setTimeout(showResults, 1200);
+            }
+        }
+
+        function navigateQuestion(direction) {
+            const newIdx = currentQuestionIdx + direction;
+            if (newIdx >= 0 && newIdx < quizData.length) {
+                renderQuestion(newIdx);
+            } else if (newIdx >= quizData.length) {
+                showResults();
+            }
+        }
+
+        function jumpToQuestion(idx) {
+            renderQuestion(idx);
+        }
+
+        function updateStats() {
+            const answered = userAnswers.filter(a => a !== null).length;
+            let score = 0;
+            userAnswers.forEach((ans, idx) => {
+                if (ans === quizData[idx].correct) score++;
+            });
+
+            statAnswered.innerText = answered;
+            statScore.innerText = score;
+
+            const percentage = quizData.length > 0 ? Math.round((answered / quizData.length) * 100) : 0;
+            progressBar.style.width = `${percentage}%`;
+            completionTag.innerText = `${percentage}% সম্পন্ন`;
+        }
+
+        function showResults() {
+            document.getElementById('quiz-card').classList.add('hidden');
+            document.getElementById('stats-strip').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+
+            const total = quizData.length;
+            let correct = 0;
+            userAnswers.forEach((ans, idx) => {
+                if (ans === quizData[idx].correct) correct++;
+            });
+            const wrong = userAnswers.filter(a => a !== null).length - correct;
+            const accuracy = total > 0 ? Math.round((correct / total) * 100) : 0;
+
+            document.getElementById('res-total').innerText = total;
+            document.getElementById('res-correct').innerText = correct;
+            document.getElementById('res-wrong').innerText = wrong;
+            document.getElementById('res-accuracy').innerText = `${accuracy}%`;
+
+            buildReviewList();
+        }
+
+        function buildReviewList() {
+            const reviewList = document.getElementById('review-list');
+            reviewList.innerHTML = '';
+            const optionPrefixes = ['ক', 'খ', 'গ', 'ঘ'];
+
+            quizData.forEach((q, idx) => {
+                const userAns = userAnswers[idx];
+                const isCorrect = userAns === q.correct;
+                const isUnanswered = userAns === null;
+
+                const itemDiv = document.createElement('div');
+                itemDiv.className = `p-4 rounded-2xl border text-sm ${
+                    isCorrect 
+                        ? 'bg-emerald-950/20 border-emerald-800/60' 
+                        : isUnanswered 
+                        ? 'bg-slate-900/40 border-slate-800' 
+                        : 'bg-rose-950/20 border-rose-800/60'
+                }`;
+
+                itemDiv.innerHTML = `
+                    <div class="font-bold text-slate-200 mb-1 leading-snug">
+                        প্রশ্ন ${q.id}: ${q.question}
+                    </div>
+                    <div class="text-xs text-slate-400 mb-2">
+                        আপনার উত্তর: <span class="${isCorrect ? 'text-emerald-400 font-semibold' : 'text-rose-400 font-semibold'}">${userAns !== null ? optionPrefixes[userAns] + '. ' + q.options[userAns] : 'উত্তর দেওয়া হয়নি'}</span>
+                        | সঠিক উত্তর: <span class="text-emerald-400 font-semibold">${optionPrefixes[q.correct]}. ${q.options[q.correct]}</span>
+                    </div>
+                    <div class="text-xs bg-slate-950/80 p-3 rounded-xl border border-slate-800 text-indigo-300">
+                        💡 <strong>ব্যাখ্যা:</strong> ${q.fact}
+                    </div>
+                `;
+
+                reviewList.appendChild(itemDiv);
+            });
+        }
+
+        function toggleReviewMode() {
+            const reviewContainer = document.getElementById('review-container');
+            reviewContainer.classList.toggle('hidden');
+        }
+
+        function confirmReset() {
+            document.getElementById('reset-modal').classList.remove('hidden');
+        }
+
+        function closeResetModal() {
+            document.getElementById('reset-modal').classList.add('hidden');
+        }
+
+        function executeReset() {
+            userAnswers = new Array(quizData.length).fill(null);
+            currentQuestionIdx = 0;
+
+            document.getElementById('result-screen').classList.add('hidden');
+            document.getElementById('review-container').classList.add('hidden');
+            document.getElementById('quiz-card').classList.remove('hidden');
+            document.getElementById('stats-strip').classList.remove('hidden');
+
+            closeResetModal();
+            buildNavigatorGrid();
+            renderQuestion(0);
+            updateStats();
+        }
+
+        window.onload = initQuiz;
+    </script>
+</body>
+</html>
